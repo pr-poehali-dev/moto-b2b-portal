@@ -362,10 +362,10 @@ const Index = () => {
 
       <footer className="bg-secondary text-secondary-foreground py-12 px-6">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
               <h3 className="font-bold mb-4 text-xl">Контакты</h3>
-              <div className="space-y-3 text-secondary-foreground/80">
+              <div className="space-y-3 text-secondary-foreground/80 mb-6">
                 <div className="flex items-center gap-2">
                   <Icon name="Phone" size={20} />
                   <a href="tel:+79166866982" className="text-lg hover:text-primary transition-colors">+7 916 686-69-82</a>
@@ -379,15 +379,30 @@ const Index = () => {
                   <span className="text-lg">г. Москва</span>
                 </div>
               </div>
+              
+              <div>
+                <h3 className="font-bold mb-4">Навигация</h3>
+                <nav className="space-y-2 text-secondary-foreground/80">
+                  <a href="#bikes" className="block hover:text-primary transition-colors">Мотоциклы</a>
+                  <a href="#benefits" className="block hover:text-primary transition-colors">Преимущества</a>
+                  <a href="#contact" className="block hover:text-primary transition-colors">Контакты</a>
+                </nav>
+              </div>
             </div>
             
             <div>
-              <h3 className="font-bold mb-4">Навигация</h3>
-              <nav className="space-y-2 text-secondary-foreground/80">
-                <a href="#bikes" className="block hover:text-primary transition-colors">Мотоциклы</a>
-                <a href="#benefits" className="block hover:text-primary transition-colors">Преимущества</a>
-                <a href="#contact" className="block hover:text-primary transition-colors">Контакты</a>
-              </nav>
+              <h3 className="font-bold mb-4 text-xl">Мы на карте</h3>
+              <div className="w-full h-[300px] rounded-lg overflow-hidden shadow-lg">
+                <iframe
+                  src="https://yandex.ru/map-widget/v1/?ll=37.617700,55.755800&z=10&l=map"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  allowFullScreen
+                  style={{ position: 'relative' }}
+                  title="Карта Москвы"
+                ></iframe>
+              </div>
             </div>
           </div>
           
