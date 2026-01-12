@@ -3,15 +3,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: ""
   });
+  const [selectedBike, setSelectedBike] = useState<typeof motorcycles[0] | null>(null);
+  const [isCallDialogOpen, setIsCallDialogOpen] = useState(false);
+  const [callFormData, setCallFormData] = useState({ name: "", phone: "" });
 
   const motorcycles = [
     {
@@ -21,7 +27,9 @@ const Index = () => {
       power: "136 л.с.",
       range: "500+ км",
       luggage: "47 л",
-      features: ["Круиз-контроль", "Подогрев рукояток", "Регулируемая подвеска", "Защита от падения"]
+      features: ["Круиз-контроль", "Подогрев рукояток", "Регулируемая подвеска", "Защита от падения"],
+      description: "Легендарный туристический эндуро для путешествий по любым дорогам. Мощный оппозитный двигатель, продвинутая электроника и комфорт на дальних расстояниях.",
+      price: "от 2 500 000 ₽"
     },
     {
       name: "Honda Gold Wing Tour",
@@ -30,7 +38,9 @@ const Index = () => {
       power: "126 л.с.",
       range: "550+ км",
       luggage: "110 л",
-      features: ["Apple CarPlay", "Airbag", "7-ступ. коробка DCT", "Навигация"]
+      features: ["Apple CarPlay", "Airbag", "7-ступ. коробка DCT", "Навигация"],
+      description: "Король туристических мотоциклов. Роскошный комфорт, огромный багажник и передовые технологии для дальних путешествий с пассажиром.",
+      price: "от 3 800 000 ₽"
     },
     {
       name: "Yamaha Tracer 9 GT+",
@@ -39,7 +49,9 @@ const Index = () => {
       power: "119 л.с.",
       range: "400+ км",
       luggage: "25 л + кофры",
-      features: ["TFT дисплей", "Быстрое зарядное USB", "Электронная подвеска", "Круиз-контроль"]
+      features: ["TFT дисплей", "Быстрое зарядное USB", "Электронная подвеска", "Круиз-контроль"],
+      description: "Спортивный туристический мотоцикл с характером. Идеальный баланс динамики и комфорта для активных путешественников.",
+      price: "от 1 600 000 ₽"
     }
   ];
 
@@ -68,7 +80,26 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    toast({
+      title: "Заявка отправлена!",
+      description: "Мы свяжемся с вами в ближайшее время.",
+    });
+    setFormData({ name: "", email: "", phone: "", message: "" });
+  };
+
+  const handleCallRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Запрос принят!",
+      description: `${callFormData.name}, мы перезвоним вам в течение 5 минут.`,
+    });
+    setCallFormData({ name: "", phone: "" });
+    setIsCallDialogOpen(false);
+  };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -80,11 +111,11 @@ const Index = () => {
             <span className="text-2xl font-bold">TourMoto</span>
           </div>
           <nav className="hidden md:flex gap-6">
-            <a href="#bikes" className="hover:text-primary transition-colors">Мотоциклы</a>
-            <a href="#benefits" className="hover:text-primary transition-colors">Преимущества</a>
-            <a href="#contact" className="hover:text-primary transition-colors">Контакты</a>
+            <button onClick={() => scrollToSection("bikes")} className="hover:text-primary transition-colors">Мотоциклы</button>
+            <button onClick={() => scrollToSection("benefits")} className="hover:text-primary transition-colors">Преимущества</button>
+            <button onClick={() => scrollToSection("contact")} className="hover:text-primary transition-colors">Контакты</button>
           </nav>
-          <Button className="bg-accent hover:bg-accent/90">
+          <Button onClick={() => setIsCallDialogOpen(true)} className="bg-accent hover:bg-accent/90">
             <Icon name="Phone" size={18} className="mr-2" />
             Заказать звонок
           </Button>
@@ -103,7 +134,7 @@ const Index = () => {
           <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
             Туристические мотоциклы для дальних путешествий с максимальным комфортом
           </p>
-          <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6">
+          <Button onClick={() => scrollToSection("bikes")} size="lg" className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6">
             Узнать подробнее
             <Icon name="ArrowRight" size={20} className="ml-2" />
           </Button>
@@ -171,7 +202,7 @@ const Index = () => {
                     ))}
                   </div>
                   
-                  <Button className="w-full bg-primary hover:bg-primary/90">
+                  <Button onClick={() => setSelectedBike(bike)} className="w-full bg-primary hover:bg-primary/90">
                     Подробнее
                   </Button>
                 </CardContent>
@@ -320,6 +351,102 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      <Dialog open={!!selectedBike} onOpenChange={() => setSelectedBike(null)}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          {selectedBike && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-3xl">{selectedBike.name}</DialogTitle>
+                <DialogDescription className="text-lg pt-2">{selectedBike.description}</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-6">
+                <img src={selectedBike.image} alt={selectedBike.name} className="w-full h-80 object-cover rounded-lg" />
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-muted rounded-lg">
+                    <Icon name="Gauge" size={24} className="mx-auto mb-2 text-primary" />
+                    <div className="text-sm text-muted-foreground">Объем</div>
+                    <div className="font-bold">{selectedBike.engine}</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted rounded-lg">
+                    <Icon name="Zap" size={24} className="mx-auto mb-2 text-primary" />
+                    <div className="text-sm text-muted-foreground">Мощность</div>
+                    <div className="font-bold">{selectedBike.power}</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted rounded-lg">
+                    <Icon name="Fuel" size={24} className="mx-auto mb-2 text-primary" />
+                    <div className="text-sm text-muted-foreground">Запас хода</div>
+                    <div className="font-bold">{selectedBike.range}</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted rounded-lg">
+                    <Icon name="Package" size={24} className="mx-auto mb-2 text-primary" />
+                    <div className="text-sm text-muted-foreground">Багаж</div>
+                    <div className="font-bold">{selectedBike.luggage}</div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-bold text-xl mb-3">Особенности:</h3>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {selectedBike.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-2 p-3 bg-muted rounded-lg">
+                        <Icon name="Check" size={20} className="text-primary flex-shrink-0" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div>
+                    <div className="text-sm text-muted-foreground">Стоимость</div>
+                    <div className="text-3xl font-bold text-primary">{selectedBike.price}</div>
+                  </div>
+                  <Button onClick={() => { setSelectedBike(null); scrollToSection("contact"); }} size="lg" className="bg-accent hover:bg-accent/90">
+                    <Icon name="MessageSquare" size={20} className="mr-2" />
+                    Оставить заявку
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isCallDialogOpen} onOpenChange={setIsCallDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Заказать звонок</DialogTitle>
+            <DialogDescription>Оставьте свои данные и мы перезвоним в течение 5 минут</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleCallRequest} className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Имя</label>
+              <Input 
+                placeholder="Иван Иванов"
+                value={callFormData.name}
+                onChange={(e) => setCallFormData({...callFormData, name: e.target.value})}
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-2 block">Телефон</label>
+              <Input 
+                type="tel"
+                placeholder="+7 (999) 123-45-67"
+                value={callFormData.phone}
+                onChange={(e) => setCallFormData({...callFormData, phone: e.target.value})}
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full bg-accent hover:bg-accent/90">
+              <Icon name="Phone" size={18} className="mr-2" />
+              Жду звонка
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
