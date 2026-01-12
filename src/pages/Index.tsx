@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -18,6 +19,7 @@ const Index = () => {
   const [selectedBike, setSelectedBike] = useState<typeof motorcycles[0] | null>(null);
   const [isCallDialogOpen, setIsCallDialogOpen] = useState(false);
   const [callFormData, setCallFormData] = useState({ name: "", phone: "" });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const motorcycles = [
     {
@@ -100,6 +102,7 @@ const Index = () => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -115,10 +118,62 @@ const Index = () => {
             <button onClick={() => scrollToSection("benefits")} className="hover:text-primary transition-colors">Преимущества</button>
             <button onClick={() => scrollToSection("contact")} className="hover:text-primary transition-colors">Контакты</button>
           </nav>
-          <Button onClick={() => setIsCallDialogOpen(true)} className="bg-accent hover:bg-accent/90">
-            <Icon name="Phone" size={18} className="mr-2" />
-            Заказать звонок
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button onClick={() => setIsCallDialogOpen(true)} className="hidden sm:flex bg-accent hover:bg-accent/90">
+              <Icon name="Phone" size={18} className="mr-2" />
+              Заказать звонок
+            </Button>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Icon name="Bike" size={28} />
+                    TourMoto
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-8">
+                  <button 
+                    onClick={() => scrollToSection("bikes")} 
+                    className="flex items-center gap-3 text-lg p-3 hover:bg-muted rounded-lg transition-colors"
+                  >
+                    <Icon name="Bike" size={20} />
+                    Мотоциклы
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection("benefits")} 
+                    className="flex items-center gap-3 text-lg p-3 hover:bg-muted rounded-lg transition-colors"
+                  >
+                    <Icon name="Award" size={20} />
+                    Преимущества
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection("contact")} 
+                    className="flex items-center gap-3 text-lg p-3 hover:bg-muted rounded-lg transition-colors"
+                  >
+                    <Icon name="Mail" size={20} />
+                    Контакты
+                  </button>
+                  <div className="pt-4 border-t">
+                    <Button 
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsCallDialogOpen(true);
+                      }} 
+                      className="w-full bg-accent hover:bg-accent/90"
+                    >
+                      <Icon name="Phone" size={18} className="mr-2" />
+                      Заказать звонок
+                    </Button>
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
