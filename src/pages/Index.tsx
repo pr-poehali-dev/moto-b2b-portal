@@ -365,9 +365,19 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <h3 className="font-bold mb-4 text-xl">Контакты</h3>
-              <div className="flex items-center gap-2 text-secondary-foreground/80">
-                <Icon name="Phone" size={20} />
-                <a href="tel:+79166866982" className="text-lg hover:text-primary transition-colors">+7 916 686-69-82</a>
+              <div className="space-y-3 text-secondary-foreground/80">
+                <div className="flex items-center gap-2">
+                  <Icon name="Phone" size={20} />
+                  <a href="tel:+79166866982" className="text-lg hover:text-primary transition-colors">+7 916 686-69-82</a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon name="Mail" size={20} />
+                  <a href="mailto:igor2958@mail.ru" className="text-lg hover:text-primary transition-colors">igor2958@mail.ru</a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon name="MapPin" size={20} />
+                  <span className="text-lg">г. Москва</span>
+                </div>
               </div>
             </div>
             
