@@ -364,30 +364,10 @@ const Index = () => {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Icon name="Bike" size={28} />
-                <span className="text-xl font-bold">TourMoto</span>
-              </div>
-              <p className="text-secondary-foreground/80">
-                Официальный дилер туристических мотоциклов премиум-класса
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold mb-4">Контакты</h3>
-              <div className="space-y-2 text-secondary-foreground/80">
-                <div className="flex items-center gap-2">
-                  <Icon name="Phone" size={18} />
-                  <span>+7 (495) 123-45-67</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="Mail" size={18} />
-                  <span>info@tourmoto.ru</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="MapPin" size={18} />
-                  <span>Москва, ул. Примерная, 1</span>
-                </div>
+              <h3 className="font-bold mb-4 text-xl">Контакты</h3>
+              <div className="flex items-center gap-2 text-secondary-foreground/80">
+                <Icon name="Phone" size={20} />
+                <a href="tel:+79166866982" className="text-lg hover:text-primary transition-colors">+7 916 686-69-82</a>
               </div>
             </div>
             
